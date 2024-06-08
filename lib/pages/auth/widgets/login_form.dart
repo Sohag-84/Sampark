@@ -25,7 +25,9 @@ class LoginForm extends StatelessWidget {
 
         ///login button
         PrimaryButton(
-          onTap: () {},
+          onTap: () {
+            Get.offAllNamed("/home");
+          },
           btnName: "LOGIN",
           icon: Icons.lock_open,
         ),

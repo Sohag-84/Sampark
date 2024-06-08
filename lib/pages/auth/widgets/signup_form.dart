@@ -37,7 +37,9 @@ class SignupForm extends StatelessWidget {
 
         ///login button
         PrimaryButton(
-          onTap: () {},
+          onTap: () {
+            Get.offAllNamed("/home");
+          },
           btnName: "SIGN UP",
           icon: Icons.lock_open,
         ),

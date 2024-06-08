@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sampark/config/page_path.dart';
 import 'package:sampark/config/theme.dart';
 import 'package:sampark/pages/welcome/page/welcome_page.dart';
 
@@ -11,12 +13,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sampark',
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
+      getPages: pagePath,
       home: const WelcomePage(),
     );
   }

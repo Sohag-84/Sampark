@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/pages/auth/widgets/login_form.dart';
+import 'package:sampark/pages/auth/widgets/signup_form.dart';
 
 class AuthPageBody extends StatelessWidget {
   const AuthPageBody({super.key});
@@ -9,7 +11,6 @@ class AuthPageBody extends StatelessWidget {
     RxBool isLogin = false.obs;
     return Obx(() {
       return Container(
-        height: 400,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
@@ -84,6 +85,10 @@ class AuthPageBody extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const Gap(30),
+
+                  ///text field
+                  isLogin.value ? const LoginForm() : const SignupForm(),
                 ],
               ),
             )

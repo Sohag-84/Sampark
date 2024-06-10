@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:sampark/pages/auth/page/auth_page.dart';
 import 'package:sampark/pages/chat/page/chat_page.dart';
+import 'package:sampark/pages/contact/page/contact_page.dart';
 import 'package:sampark/pages/home/page/home_page.dart';
 import 'package:sampark/pages/user%20profile/pages/user_profile_page.dart';
 import 'package:sampark/pages/user%20profile/pages/user_update_profile.dart';
@@ -35,6 +36,11 @@ var pagePath = [
   GetPage(
     name: "/profile",
     page: () => ProfilePage(),
+    transition: Transition.rightToLeft,
+  ),
+  GetPage(
+    name: "/contact",
+    page: () => const ContactPage(),
     transition: Transition.rightToLeft,
   ),
 ];

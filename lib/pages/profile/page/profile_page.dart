@@ -1,14 +1,22 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
 import 'package:sampark/common%20widgets/primary_button.dart';
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/controller/image_picker.dart';
 import 'package:sampark/controller/profile_controller.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
   final controller = Get.put(ProfileController());
+  final imageController = Get.put(ImagePickerController());
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     RxBool isEdit = false.obs;
+    RxString imagePath = "".obs;
 
     final nameController =
         TextEditingController(text: controller.currentUser.value.name ?? "");
@@ -43,11 +51,56 @@ class ProfilePage extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                CircleAvatar(
-                                  backgroundColor: theme.colorScheme.surface,
-                                  radius: 80,
-                                  child: const Icon(Icons.image),
-                                )
+                                isEdit.value
+                                    ? InkWell(
+                                        onTap: () async {
+                                          imagePath.value =
+                                              await imageController.pickImage(
+                                            source: ImageSource.gallery,
+                                          );
+
+                                          log("image: ${imagePath.value}");
+                                        },
+                                        child: Container(
+                                          height: 150,
+                                          width: 150,
+                                          decoration: BoxDecoration(
+                                            color: theme.colorScheme.surface,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: imagePath.value == ""
+                                              ? const Icon(Icons.add, size: 35)
+                                              : ClipRRect(
+                                                  clipBehavior: Clip.antiAlias,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                  child: Image.file(
+                                                    File(imagePath.value),
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
+                                        ),
+                                      )
+                                    : Container(
+                                        height: 150,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                          color: theme.colorScheme.surface,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: imagePath.value == ""
+                                            ? const Icon(Icons.image, size: 35)
+                                            : ClipRRect(
+                                                clipBehavior: Clip.antiAlias,
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                child: Image.file(
+                                                  File(imagePath.value),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
+                                      ),
                               ],
                             ),
                             const Gap(20),

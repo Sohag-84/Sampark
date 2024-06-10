@@ -4,7 +4,7 @@ import 'package:sampark/pages/chat/page/chat_page.dart';
 import 'package:sampark/pages/home/page/home_page.dart';
 import 'package:sampark/pages/user%20profile/pages/user_profile_page.dart';
 import 'package:sampark/pages/user%20profile/pages/user_update_profile.dart';
-import 'package:sampark/profile/page/profile_page.dart';
+import 'package:sampark/pages/profile/page/profile_page.dart';
 
 var pagePath = [
   GetPage(

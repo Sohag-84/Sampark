@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:sampark/common%20widgets/primary_button.dart';
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/controller/auth_controller.dart';
 import 'package:sampark/controller/image_picker.dart';
 import 'package:sampark/controller/profile_controller.dart';
 
@@ -11,6 +12,7 @@ class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
   final controller = Get.put(ProfileController());
   final imageController = Get.put(ImagePickerController());
+  final authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,14 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await authController.logoutUser();
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -90,8 +100,11 @@ class ProfilePage extends StatelessWidget {
                                           shape: BoxShape.circle,
                                         ),
                                         child: controller.currentUser.value
-                                                    .profileImage ==
-                                                ""
+                                                        .profileImage ==
+                                                    "" ||
+                                                controller.currentUser.value
+                                                        .profileImage ==
+                                                    null
                                             ? const Icon(Icons.image, size: 35)
                                             : ClipRRect(
                                                 clipBehavior: Clip.antiAlias,

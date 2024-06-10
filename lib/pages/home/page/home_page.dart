@@ -1,4 +1,7 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/controller/profile_controller.dart';
 import 'package:sampark/pages/home/widget/chat_list.dart';
 import 'package:sampark/pages/home/widget/home_tab_bar.dart';
 
@@ -13,6 +16,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 3, vsync: this);
+    final profileController = Get.put(ProfileController());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,

@@ -23,7 +23,7 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            const UserInfoContainer(),
+            UserInfoContainer(),
             const Spacer(),
             ElevatedButton(
               onPressed: () {

@@ -1,9 +1,11 @@
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/controller/profile_controller.dart';
 
 import 'profile_icon_container.dart';
 
 class UserInfoContainer extends StatelessWidget {
-  const UserInfoContainer({super.key});
+  UserInfoContainer({super.key});
+  final controller = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class UserInfoContainer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "IH Sohag",
+                      controller.currentUser.value.name??"",
                       style: theme.textTheme.bodyLarge,
                     ),
                   ],
@@ -38,7 +40,7 @@ class UserInfoContainer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "sohag@gmail.com",
+                      controller.currentUser.value.email??"",
                       style: theme.textTheme.labelLarge,
                     ),
                   ],

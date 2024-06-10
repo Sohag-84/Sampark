@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/pages/auth/widgets/auth_page_body.dart';
 import 'package:sampark/pages/welcome/widgets/welcome_heading.dart';

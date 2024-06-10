@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/pages/auth/widgets/login_form.dart';
 import 'package:sampark/pages/auth/widgets/signup_form.dart';
@@ -8,7 +7,7 @@ class AuthPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RxBool isLogin = false.obs;
+    RxBool isLogin = true.obs;
     return Obx(() {
       return Container(
         padding: const EdgeInsets.all(15),

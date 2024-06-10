@@ -1,9 +1,9 @@
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/auth_controller.dart';
-import 'package:sampark/pages/profile/widgets/user_info_container.dart';
+import 'package:sampark/pages/user%20profile/widgets/user_info_container.dart';
 
-class ProfilePage extends StatelessWidget {
-  ProfilePage({super.key});
+class UserProfilePage extends StatelessWidget {
+  UserProfilePage({super.key});
   final controller = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Get.toNamed("/update-profile");
+              Get.toNamed("/user-update-profile");
             },
             icon: const Icon(Icons.edit),
           ),

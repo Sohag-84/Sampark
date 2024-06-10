@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:sampark/common%20widgets/primary_button.dart';
 import 'package:sampark/config/constant.dart';
-import 'package:sampark/pages/profile/widgets/edit_profile_textfield.dart';
+import 'package:sampark/pages/user%20profile/widgets/edit_profile_textfield.dart';
 
-class UpdateProfile extends StatelessWidget {
-  const UpdateProfile({super.key});
+class UserUpdateProfile extends StatelessWidget {
+  const UserUpdateProfile({super.key});
 
   @override
   Widget build(BuildContext context) {

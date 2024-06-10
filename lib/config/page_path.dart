@@ -2,8 +2,9 @@ import 'package:get/get.dart';
 import 'package:sampark/pages/auth/page/auth_page.dart';
 import 'package:sampark/pages/chat/page/chat_page.dart';
 import 'package:sampark/pages/home/page/home_page.dart';
-import 'package:sampark/pages/profile/pages/profile_page.dart';
-import 'package:sampark/pages/profile/pages/update_profile.dart';
+import 'package:sampark/pages/user%20profile/pages/user_profile_page.dart';
+import 'package:sampark/pages/user%20profile/pages/user_update_profile.dart';
+import 'package:sampark/profile/page/profile_page.dart';
 
 var pagePath = [
   GetPage(
@@ -22,13 +23,18 @@ var pagePath = [
     transition: Transition.rightToLeft,
   ),
   GetPage(
-    name: "/profile",
-    page: () => ProfilePage(),
+    name: "/user-profile",
+    page: () => UserProfilePage(),
     transition: Transition.rightToLeft,
   ),
   GetPage(
-    name: "/update-profile",
-    page: () => const UpdateProfile(),
+    name: "/user-update-profile",
+    page: () => const UserUpdateProfile(),
+    transition: Transition.rightToLeft,
+  ),
+  GetPage(
+    name: "/profile",
+    page: () => const ProfilePage(),
     transition: Transition.rightToLeft,
   ),
 ];

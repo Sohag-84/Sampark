@@ -12,7 +12,7 @@ class ChatList extends StatelessWidget {
           onTap: () {
             Get.toNamed("/chat");
           },
-          imgUrl: AssetsImage.boyPic,
+          imgUrl: AssetsImage.defaultProfileUrl,
           name: "Yakub",
           lastChat: "Hi! How are you?",
           lastTime: "10:30 PM",
@@ -21,7 +21,7 @@ class ChatList extends StatelessWidget {
           onTap: () {
             Get.toNamed("/chat");
           },
-          imgUrl: AssetsImage.girlPic,
+          imgUrl: AssetsImage.defaultProfileUrl,
           name: "Nahida",
           lastChat: "Hi! How are you?",
           lastTime: "10:30 PM",
@@ -30,7 +30,7 @@ class ChatList extends StatelessWidget {
           onTap: () {
             Get.toNamed("/chat");
           },
-          imgUrl: AssetsImage.boyPic,
+          imgUrl: AssetsImage.defaultProfileUrl,
           name: "Sharif",
           lastChat: "Hi! How are you?",
           lastTime: "10:30 PM",
@@ -39,7 +39,7 @@ class ChatList extends StatelessWidget {
           onTap: () {
             Get.toNamed("/chat");
           },
-          imgUrl: AssetsImage.boyPic,
+          imgUrl: AssetsImage.defaultProfileUrl,
           name: "Nahid",
           lastChat: "Hi! How are you?",
           lastTime: "10:30 PM",
@@ -48,7 +48,7 @@ class ChatList extends StatelessWidget {
           onTap: () {
             Get.toNamed("/chat");
           },
-          imgUrl: AssetsImage.girlPic,
+          imgUrl: AssetsImage.defaultProfileUrl,
           name: "Nowrin",
           lastChat: "Hi! How are you?",
           lastTime: "10:30 PM",

@@ -1,11 +1,12 @@
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/controller/contact_controller.dart';
 import 'package:sampark/pages/contact/widgets/contact_search.dart';
 import 'package:sampark/pages/contact/widgets/new_contact_tile.dart';
 import 'package:sampark/pages/home/widget/chat_tile.dart';
 
 class ContactPage extends StatelessWidget {
-  const ContactPage({super.key});
-
+  ContactPage({super.key});
+  final controller = Get.put(ContactController());
   @override
   Widget build(BuildContext context) {
     RxBool isSearchEnable = false.obs;
@@ -53,60 +54,23 @@ class ContactPage extends StatelessWidget {
               child: Text("Contacts on Sampark"),
             ),
             const Gap(10),
-            ChatTile(
-              onTap: () {
-                Get.toNamed("/chat");
-              },
-              imgUrl: AssetsImage.boyPic,
-              name: "Yakub",
-              lastChat: "Hi! How are you?",
-              lastTime: "10:30 PM",
+            Obx(
+              () => Column(
+                children: controller.userList
+                    .map(
+                      (e) => ChatTile(
+                        onTap: () {
+                          Get.toNamed("/chat");
+                        },
+                        imgUrl: e.profileImage ?? AssetsImage.defaultProfileUrl,
+                        name: e.name ?? "",
+                        lastChat: e.about ?? "",
+                        lastTime: "",
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
-            ChatTile(
-              onTap: () {
-                Get.toNamed("/chat");
-              },
-              imgUrl: AssetsImage.girlPic,
-              name: "Nahida",
-              lastChat: "Hi! How are you?",
-              lastTime: "10:30 PM",
-            ),
-            ChatTile(
-              onTap: () {
-                Get.toNamed("/chat");
-              },
-              imgUrl: AssetsImage.boyPic,
-              name: "Sharif",
-              lastChat: "Hi! How are you?",
-              lastTime: "10:30 PM",
-            ),
-            ChatTile(
-              onTap: () {
-                Get.toNamed("/chat");
-              },
-              imgUrl: AssetsImage.boyPic,
-              name: "Sharif",
-              lastChat: "Hi! How are you?",
-              lastTime: "10:30 PM",
-            ),
-            ChatTile(
-              onTap: () {
-                Get.toNamed("/chat");
-              },
-              imgUrl: AssetsImage.boyPic,
-              name: "Nahid",
-              lastChat: "Hi! How are you?",
-              lastTime: "10:30 PM",
-            ),
-            ChatTile(
-              onTap: () {
-                Get.toNamed("/chat");
-              },
-              imgUrl: AssetsImage.girlPic,
-              name: "Nowrin",
-              lastChat: "Hi! How are you?",
-              lastTime: "10:30 PM",
-            )
           ],
         ),
       ),

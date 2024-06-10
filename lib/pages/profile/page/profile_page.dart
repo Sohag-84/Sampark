@@ -100,11 +100,8 @@ class ProfilePage extends StatelessWidget {
                                           shape: BoxShape.circle,
                                         ),
                                         child: controller.currentUser.value
-                                                        .profileImage ==
-                                                    "" ||
-                                                controller.currentUser.value
-                                                        .profileImage ==
-                                                    null
+                                                    .profileImage ==
+                                                null
                                             ? const Icon(Icons.image, size: 35)
                                             : ClipRRect(
                                                 clipBehavior: Clip.antiAlias,
@@ -171,19 +168,21 @@ class ProfilePage extends StatelessWidget {
 
                             const Gap(20),
                             isEdit.value
-                                ? PrimaryButton(
-                                    onTap: () async {
-                                      await controller.updateProfile(
-                                        imageUrl: imagePath.value,
-                                        name: nameController.text,
-                                        about: aboutController.text,
-                                        number: phoneController.text,
-                                      );
-                                      isEdit.value = false;
-                                    },
-                                    btnName: "Save",
-                                    icon: Icons.save,
-                                  )
+                                ? controller.isLoading.value
+                                    ? const CircularProgressIndicator()
+                                    : PrimaryButton(
+                                        onTap: () async {
+                                          await controller.updateProfile(
+                                            imageUrl: imagePath.value,
+                                            name: nameController.text,
+                                            about: aboutController.text,
+                                            number: phoneController.text,
+                                          );
+                                          isEdit.value = false;
+                                        },
+                                        btnName: "Save",
+                                        icon: Icons.save,
+                                      )
                                 : PrimaryButton(
                                     onTap: () {
                                       isEdit.value = true;

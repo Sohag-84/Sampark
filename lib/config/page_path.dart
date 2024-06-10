@@ -40,7 +40,7 @@ var pagePath = [
   ),
   GetPage(
     name: "/contact",
-    page: () => const ContactPage(),
+    page: () => ContactPage(),
     transition: Transition.rightToLeft,
   ),
 ];

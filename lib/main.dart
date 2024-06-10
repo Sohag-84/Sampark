@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sampark/config/page_path.dart';
 import 'package:sampark/config/theme.dart';
-import 'package:sampark/pages/auth/page/auth_page.dart';
-import 'package:sampark/pages/welcome/page/welcome_page.dart';
+import 'package:sampark/pages/splash/splash_page.dart';
 
 import 'firebase_options.dart';
 
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: ThemeMode.dark,
       getPages: pagePath,
-      home: const AuthPage(),
+      home: const SplacePage(),
     );
   }
 }

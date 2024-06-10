@@ -1,19 +1,23 @@
 import 'package:sampark/common%20widgets/primary_button.dart';
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/controller/profile_controller.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
+  ProfilePage({super.key});
+  final controller = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     RxBool isEdit = false.obs;
 
-    final nameController = TextEditingController(text: "Sohag");
-    final emailController = TextEditingController(text: "sohag@gmail.com");
-    final phoneController = TextEditingController(text: "01316255373");
+    final nameController =
+        TextEditingController(text: controller.currentUser.value.name ?? "");
+    final emailController =
+        TextEditingController(text: controller.currentUser.value.email ?? "");
+    final phoneController = TextEditingController(
+        text: controller.currentUser.value.phoneNumber ?? "");
     final aboutController =
-        TextEditingController(text: "Allah is enough for me");
+        TextEditingController(text: controller.currentUser.value.about ?? "");
 
     return Scaffold(
       appBar: AppBar(

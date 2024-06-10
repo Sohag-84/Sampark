@@ -34,7 +34,7 @@ var pagePath = [
   ),
   GetPage(
     name: "/profile",
-    page: () => const ProfilePage(),
+    page: () => ProfilePage(),
     transition: Transition.rightToLeft,
   ),
 ];

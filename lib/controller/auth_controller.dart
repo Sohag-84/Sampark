@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:sampark/config/constant.dart';
+import 'package:sampark/models/user_model.dart';
 
 class AuthController {
   final auth = FirebaseAuth.instance;
@@ -46,7 +48,7 @@ class AuthController {
         email: email,
         password: password,
       );
-
+      await initUser(email: email, name: name);
       Fluttertoast.showToast(msg: "Account Created 🔥🔥");
       Get.offAllNamed("/home");
     } on FirebaseAuthException catch (e) {
@@ -66,5 +68,25 @@ class AuthController {
   Future<void> logoutUser() async {
     await auth.signOut();
     Get.offAllNamed("/auth-page");
+  }
+
+  Future<void> initUser({
+    required String email,
+    required String name,
+  }) async {
+    var newUser = UserModel(
+      email: email,
+      name: name,
+      id: auth.currentUser!.uid,
+    );
+
+    try {
+      await db
+          .collection("users")
+          .doc(auth.currentUser!.uid)
+          .set(newUser.toJson());
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }

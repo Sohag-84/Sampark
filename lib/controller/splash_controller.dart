@@ -16,7 +16,7 @@ class SplaceController extends GetxController {
       const Duration(seconds: 3),
     );
     if (auth.currentUser == null) {
-      Get.offAllNamed("/auth");
+      Get.offAllNamed("/auth-page");
     } else {
       Get.offAllNamed("/home");
       debugPrint(auth.currentUser!.email);

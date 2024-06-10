@@ -30,7 +30,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             icon: const Icon(Icons.search),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.toNamed("/profile");
+            },
             icon: const Icon(Icons.more_vert),
           ),
         ],

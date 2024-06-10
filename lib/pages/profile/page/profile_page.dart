@@ -89,14 +89,17 @@ class ProfilePage extends StatelessWidget {
                                           color: theme.colorScheme.surface,
                                           shape: BoxShape.circle,
                                         ),
-                                        child: imagePath.value == ""
+                                        child: controller.currentUser.value
+                                                    .profileImage ==
+                                                ""
                                             ? const Icon(Icons.image, size: 35)
                                             : ClipRRect(
                                                 clipBehavior: Clip.antiAlias,
                                                 borderRadius:
                                                     BorderRadius.circular(100),
-                                                child: Image.file(
-                                                  File(imagePath.value),
+                                                child: Image.network(
+                                                  controller.currentUser.value
+                                                      .profileImage!,
                                                   fit: BoxFit.fill,
                                                 ),
                                               ),
@@ -156,7 +159,13 @@ class ProfilePage extends StatelessWidget {
                             const Gap(20),
                             isEdit.value
                                 ? PrimaryButton(
-                                    onTap: () {
+                                    onTap: () async {
+                                      await controller.updateProfile(
+                                        imageUrl: imagePath.value,
+                                        name: nameController.text,
+                                        about: aboutController.text,
+                                        number: phoneController.text,
+                                      );
                                       isEdit.value = false;
                                     },
                                     btnName: "Save",

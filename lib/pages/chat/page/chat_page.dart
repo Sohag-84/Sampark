@@ -1,22 +1,40 @@
+import 'package:intl/intl.dart';
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/controller/chat_controller.dart';
+import 'package:sampark/controller/profile_controller.dart';
+import 'package:sampark/models/user_model.dart';
 import 'package:sampark/pages/chat/widgets/chat_bubble.dart';
 
 class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
+  final UserModel userModel;
+  ChatPage({super.key, required this.userModel});
+
+  final chatController = Get.put(ChatController());
+  final profileController = Get.put(ProfileController());
+
+  final messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
+        leading: Container(
+          height: 40,
+          width: 40,
           padding: const EdgeInsets.only(left: 10.0),
-          child: Image.asset(AssetsImage.boyPic),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(100.0),
+            child: Image.network(
+              userModel.profileImage ?? AssetsImage.defaultProfileUrl,
+              fit: BoxFit.fill,
+            ),
+          ),
         ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Sohag",
+              userModel.name ?? "",
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Text(
@@ -49,6 +67,7 @@ class ChatPage extends StatelessWidget {
         ),
         child: Row(
           children: [
+            ///mic icon
             SizedBox(
               width: 30,
               height: 30,
@@ -58,13 +77,20 @@ class ChatPage extends StatelessWidget {
               ),
             ),
             const Gap(10),
-            const Expanded(
+
+            ///textfield
+            Expanded(
               child: TextField(
-                decoration: InputDecoration(
-                    filled: false, hintText: "Type message...."),
+                controller: messageController,
+                decoration: const InputDecoration(
+                  filled: false,
+                  hintText: "Type message....",
+                ),
               ),
             ),
             const Gap(10),
+
+            ///send image button
             SizedBox(
               width: 30,
               height: 30,
@@ -74,44 +100,83 @@ class ChatPage extends StatelessWidget {
               ),
             ),
             const Gap(10),
-            SizedBox(
-              width: 30,
-              height: 30,
-              child: SvgPicture.asset(
-                AssetsImage.chatSendSvg,
-                width: 25,
+
+            ///send message button
+            InkWell(
+              onTap: () {
+                if (messageController.text.trim().isNotEmpty) {
+                  chatController.sendMessage(
+                    targetUserId: userModel.id!,
+                    message: messageController.text,
+                  );
+                  messageController.clear();
+                }
+              },
+              child: SizedBox(
+                width: 30,
+                height: 30,
+                child: SvgPicture.asset(
+                  AssetsImage.chatSendSvg,
+                  width: 25,
+                ),
               ),
             ),
           ],
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: ListView(
-          children: const [
-            ChatBubble(
-              message: "How are you?",
-              isComming: false,
-              time: "10:12 PM",
-              status: "read",
-              imageUrl: "",
-            ),
-            ChatBubble(
-              message: "Fine.What about you?",
-              isComming: true,
-              time: "10:12 PM",
-              status: "read",
-              imageUrl: "",
-            ),
-            ChatBubble(
-              message: "Fine.What about you?",
-              isComming: false,
-              time: "10:12 PM",
-              status: "read",
-              imageUrl:
-                  "https://w7.pngwing.com/pngs/348/885/png-transparent-flutter-dev-illustration.png",
-            ),
-          ],
+        padding: const EdgeInsets.only(
+          left: 10,
+          top: 10.0,
+          right: 10,
+          bottom: 70,
+        ),
+        child: StreamBuilder(
+          stream: chatController.getMessages(
+            targetUserId: userModel.id!,
+          ),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  snapshot.error.toString(),
+                ),
+              );
+            }
+            if (snapshot.data == null) {
+              return const Center(
+                child: Text(
+                  "No Message found",
+                ),
+              );
+            } else {
+              return ListView.builder(
+                reverse: true,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  final message = snapshot.data![index];
+
+                  DateTime timestamp = DateTime.parse(message.timestamp!);
+                  String formattedTime =
+                      DateFormat("hh:mm:a").format(timestamp);
+
+                  return ChatBubble(
+                    message: message.message.toString(),
+                    isComming: message.receiverId ==
+                        profileController.currentUser.value.id,
+                    time: formattedTime,
+                    status: "read",
+                    imageUrl: message.imageUrl ?? "",
+                  );
+                },
+              );
+            }
+          },
         ),
       ),
     );

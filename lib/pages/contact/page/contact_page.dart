@@ -1,6 +1,7 @@
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/chat_controller.dart';
 import 'package:sampark/controller/contact_controller.dart';
+import 'package:sampark/pages/chat/page/chat_page.dart';
 import 'package:sampark/pages/contact/widgets/contact_search.dart';
 import 'package:sampark/pages/contact/widgets/new_contact_tile.dart';
 import 'package:sampark/pages/home/widget/chat_tile.dart';
@@ -62,10 +63,7 @@ class ContactPage extends StatelessWidget {
                     .map(
                       (e) => ChatTile(
                         onTap: () {
-                          final roomId = chatController.getRoomId(
-                            targetUserId: e.id!,
-                          );
-                          debugPrint("Room Id: $roomId");
+                          Get.to(() => ChatPage(userModel: e));
                         },
                         imgUrl: e.profileImage ?? AssetsImage.defaultProfileUrl,
                         name: e.name ?? "",

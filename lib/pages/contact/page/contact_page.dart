@@ -65,15 +65,19 @@ class ContactPage extends StatelessWidget {
               () => Column(
                 children: controller.userList
                     .map(
-                      (e) => ChatTile(
-                        onTap: () {
-                          Get.to(() => ChatPage(userModel: e));
-                        },
-                        imgUrl: e.profileImage ?? AssetsImage.defaultProfileUrl,
-                        name: e.name ?? "",
-                        lastChat: e.about ?? "",
-                        lastTime: "",
-                      ),
+                      (e) =>
+                          e.email == profileController.currentUser.value.email
+                              ? Container()
+                              : ChatTile(
+                                  onTap: () {
+                                    Get.to(() => ChatPage(userModel: e));
+                                  },
+                                  imgUrl: e.profileImage ??
+                                      AssetsImage.defaultProfileUrl,
+                                  name: e.name ?? "",
+                                  lastChat: e.about ?? "",
+                                  lastTime: "",
+                                ),
                     )
                     .toList(),
               ),

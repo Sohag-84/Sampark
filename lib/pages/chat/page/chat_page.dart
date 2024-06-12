@@ -108,6 +108,7 @@ class ChatPage extends StatelessWidget {
                   chatController.sendMessage(
                     targetUserId: userModel.id!,
                     message: messageController.text,
+                    targetUser: userModel,
                   );
                   messageController.clear();
                 }

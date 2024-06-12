@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/models/chat_model.dart';
+import 'package:sampark/models/chat_room_model.dart';
+import 'package:sampark/models/user_model.dart';
 import 'package:uuid/uuid.dart';
 
 import 'profile_controller.dart';
@@ -31,6 +33,7 @@ class ChatController extends GetxController {
   Future<void> sendMessage({
     required String targetUserId,
     required String message,
+    required UserModel targetUser,
   }) async {
     isLoading.value = true;
     String roomId = getRoomId(targetUserId: targetUserId);
@@ -45,7 +48,21 @@ class ChatController extends GetxController {
       timestamp: DateTime.now().toString(),
     );
 
+    final roomDetails = ChatRoomModel(
+      id: roomId,
+      lastMessage: message,
+      lastMessageTimestamp: DateTime.now().toString(),
+      sender: profileController.currentUser.value,
+      receiver: targetUser,
+      timestamp: DateTime.now().toString(),
+      unReadMessNo: 0,
+    );
+
     try {
+      ///for save chat room details
+      await db.collection("chats").doc(roomId).set(roomDetails.toJson());
+
+      ///for save message
       await db
           .collection("chats")
           .doc(roomId)

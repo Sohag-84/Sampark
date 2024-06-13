@@ -1,10 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/profile_controller.dart';
 
 import 'profile_icon_container.dart';
 
 class UserInfoContainer extends StatelessWidget {
-  UserInfoContainer({super.key});
+  final String profileImage;
+  final String userName;
+  final String userEmail;
+  UserInfoContainer({
+    super.key,
+    required this.profileImage,
+    required this.userName,
+    required this.userEmail,
+  });
   final controller = Get.put(ProfileController());
 
   @override
@@ -24,14 +33,28 @@ class UserInfoContainer extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(AssetsImage.boyPic),
+                    SizedBox(
+                      height: 150,
+                      width: 150,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: CachedNetworkImage(
+                          imageUrl: profileImage,
+                          fit: BoxFit.fill,
+                          placeholder: (context, url) =>
+                              const Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      controller.currentUser.value.name??"",
+                      userName,
                       style: theme.textTheme.bodyLarge,
                     ),
                   ],
@@ -40,7 +63,7 @@ class UserInfoContainer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      controller.currentUser.value.email??"",
+                      userEmail,
                       style: theme.textTheme.labelLarge,
                     ),
                   ],

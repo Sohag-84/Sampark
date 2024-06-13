@@ -4,6 +4,7 @@ import 'package:sampark/controller/chat_controller.dart';
 import 'package:sampark/controller/profile_controller.dart';
 import 'package:sampark/models/user_model.dart';
 import 'package:sampark/pages/chat/widgets/chat_bubble.dart';
+import 'package:sampark/pages/user%20profile/pages/user_profile_page.dart';
 
 class ChatPage extends StatelessWidget {
   final UserModel userModel;
@@ -18,15 +19,20 @@ class ChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Container(
-          height: 40,
-          width: 40,
-          padding: const EdgeInsets.only(left: 10.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(100.0),
-            child: Image.network(
-              userModel.profileImage ?? AssetsImage.defaultProfileUrl,
-              fit: BoxFit.fill,
+        leading: InkWell(
+          onTap: () {
+            Get.to(() => UserProfilePage(userModel: userModel));
+          },
+          child: Container(
+            height: 40,
+            width: 40,
+            padding: const EdgeInsets.only(left: 10.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100.0),
+              child: Image.network(
+                userModel.profileImage ?? AssetsImage.defaultProfileUrl,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
         ),

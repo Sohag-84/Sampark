@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sampark/common%20widgets/primary_button.dart';
 import 'package:sampark/config/constant.dart';
@@ -107,10 +108,19 @@ class ProfilePage extends StatelessWidget {
                                                 clipBehavior: Clip.antiAlias,
                                                 borderRadius:
                                                     BorderRadius.circular(100),
-                                                child: Image.network(
-                                                  controller.currentUser.value
+                                                child: CachedNetworkImage(
+                                                  imageUrl: controller
+                                                      .currentUser
+                                                      .value
                                                       .profileImage!,
                                                   fit: BoxFit.fill,
+                                                  placeholder: (context, url) =>
+                                                      const Center(
+                                                          child:
+                                                              CircularProgressIndicator()),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
                                                 ),
                                               ),
                                       ),

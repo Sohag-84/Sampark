@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/models/chat_model.dart';
 import 'package:sampark/models/chat_room_model.dart';
@@ -29,6 +30,26 @@ class ChatController extends GetxController {
     }
   }
 
+  UserModel getSender(UserModel currentUser, UserModel targetUser) {
+    String currentUserId = currentUser.id!;
+    String targetUserId = targetUser.id!;
+    if (currentUserId[0].codeUnitAt(0) > targetUserId[0].codeUnitAt(0)) {
+      return currentUser;
+    } else {
+      return targetUser;
+    }
+  }
+
+  UserModel getReciver(UserModel currentUser, UserModel targetUser) {
+    String currentUserId = currentUser.id!;
+    String targetUserId = targetUser.id!;
+    if (currentUserId[0].codeUnitAt(0) > targetUserId[0].codeUnitAt(0)) {
+      return targetUser;
+    } else {
+      return currentUser;
+    }
+  }
+
   ///for send message
   Future<void> sendMessage({
     required String targetUserId,
@@ -38,30 +59,35 @@ class ChatController extends GetxController {
     isLoading.value = true;
     String roomId = getRoomId(targetUserId: targetUserId);
     var chatId = uuid.v6();
+    DateTime timestamp = DateTime.now();
+    String formattedTime = DateFormat("hh:mm:a").format(timestamp);
 
-    final newChat = ChatModel(
+    UserModel sender =
+        getSender(profileController.currentUser.value, targetUser);
+    UserModel receiver =
+        getReciver(profileController.currentUser.value, targetUser);
+
+    var newChat = ChatModel(
       id: chatId,
       message: message,
       senderId: auth.currentUser!.uid,
-      senderName: profileController.currentUser.value.name,
       receiverId: targetUserId,
+      senderName: profileController.currentUser.value.name,
       timestamp: DateTime.now().toString(),
+      readStatus: "unread",
     );
 
-    final roomDetails = ChatRoomModel(
+    var roomDetails = ChatRoomModel(
       id: roomId,
       lastMessage: message,
-      lastMessageTimestamp: DateTime.now().toString(),
-      sender: profileController.currentUser.value,
-      receiver: targetUser,
+      lastMessageTimestamp: formattedTime,
+      sender: sender,
+      receiver: receiver,
       timestamp: DateTime.now().toString(),
       unReadMessNo: 0,
     );
 
     try {
-      ///for save chat room details
-      await db.collection("chats").doc(roomId).set(roomDetails.toJson());
-
       ///for save message
       await db
           .collection("chats")
@@ -69,6 +95,9 @@ class ChatController extends GetxController {
           .collection("messages")
           .doc(chatId)
           .set(newChat.toJson());
+
+      ///for save chat room details
+      await db.collection("chats").doc(roomId).set(roomDetails.toJson());
     } catch (e) {
       debugPrint(e.toString());
     }

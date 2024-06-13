@@ -1,59 +1,56 @@
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/controller/chat_controller.dart';
+import 'package:sampark/controller/contact_controller.dart';
+import 'package:sampark/controller/profile_controller.dart';
+import 'package:sampark/pages/chat/page/chat_page.dart';
 import 'package:sampark/pages/home/widget/chat_tile.dart';
 
 class ChatList extends StatelessWidget {
-  const ChatList({super.key});
+  ChatList({super.key});
+
+  final controller = Get.put(ContactController());
+  final contactController = Get.put(ContactController());
+  final profileController = Get.put(ProfileController());
+  final chatController = Get.put(ChatController());
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        ChatTile(
-          onTap: () {
-            Get.toNamed("/chat");
-          },
-          imgUrl: AssetsImage.defaultProfileUrl,
-          name: "Yakub",
-          lastChat: "Hi! How are you?",
-          lastTime: "10:30 PM",
-        ),
-        ChatTile(
-          onTap: () {
-            Get.toNamed("/chat");
-          },
-          imgUrl: AssetsImage.defaultProfileUrl,
-          name: "Nahida",
-          lastChat: "Hi! How are you?",
-          lastTime: "10:30 PM",
-        ),
-        ChatTile(
-          onTap: () {
-            Get.toNamed("/chat");
-          },
-          imgUrl: AssetsImage.defaultProfileUrl,
-          name: "Sharif",
-          lastChat: "Hi! How are you?",
-          lastTime: "10:30 PM",
-        ),
-        ChatTile(
-          onTap: () {
-            Get.toNamed("/chat");
-          },
-          imgUrl: AssetsImage.defaultProfileUrl,
-          name: "Nahid",
-          lastChat: "Hi! How are you?",
-          lastTime: "10:30 PM",
-        ),
-        ChatTile(
-          onTap: () {
-            Get.toNamed("/chat");
-          },
-          imgUrl: AssetsImage.defaultProfileUrl,
-          name: "Nowrin",
-          lastChat: "Hi! How are you?",
-          lastTime: "10:30 PM",
-        ),
-      ],
+    return RefreshIndicator(
+      onRefresh: () {
+        return controller.getChatRoomList();
+      },
+      child: Obx(() {
+        return ListView(
+          children: controller.chatRoomList
+              .map(
+                (e) => ChatTile(
+                  onTap: () {
+                    Get.to(
+                      () => ChatPage(
+                        userModel: (e.receiver!.id ==
+                                profileController.currentUser.value.id
+                            ? e.sender
+                            : e.receiver)!,
+                      ),
+                    );
+                  },
+                  imgUrl:
+                      (e.receiver!.id == profileController.currentUser.value.id
+                              ? e.sender!.profileImage
+                              : e.receiver!.profileImage) ??
+                          AssetsImage.defaultProfileUrl,
+                  name:
+                      (e.receiver!.id == profileController.currentUser.value.id
+                              ? e.sender!.name
+                              : e.receiver!.name) ??
+                          "",
+                  lastChat: e.lastMessage ?? "",
+                  lastTime: e.lastMessageTimestamp ?? "",
+                ),
+              )
+              .toList(),
+        );
+      }),
     );
   }
 }

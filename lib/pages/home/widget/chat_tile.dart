@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sampark/config/constant.dart';
 
 class ChatTile extends StatelessWidget {
@@ -33,7 +34,13 @@ class ChatTile extends StatelessWidget {
               width: 60,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
-                child: Image.network(imgUrl, width: 50, fit: BoxFit.fill),
+                child: CachedNetworkImage(
+                  imageUrl: imgUrl,
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) =>
+                      const Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
             ),
             const Gap(5),

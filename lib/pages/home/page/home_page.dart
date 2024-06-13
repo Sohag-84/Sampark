@@ -18,8 +18,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 3, vsync: this);
     final profileController = Get.put(ProfileController());
-    final controller = Get.put(ContactController());
-    
+    final contactController = Get.put(ContactController());
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
@@ -33,7 +33,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              contactController.getChatRoomList();
+            },
             icon: const Icon(Icons.search),
           ),
           IconButton(
@@ -62,10 +64,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         padding: const EdgeInsets.all(10.0),
         child: TabBarView(
           controller: tabController,
-          children: const [
+          children: [
             ChatList(),
-            Center(child: Text("Groups")),
-            Center(child: Text("Calls")),
+            const Center(child: Text("Groups")),
+            const Center(child: Text("Calls")),
           ],
         ),
       ),

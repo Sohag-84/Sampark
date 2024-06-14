@@ -61,7 +61,9 @@ class ChatBubble extends StatelessWidget {
                                 const Icon(Icons.error),
                           ),
                         ),
-                        message == "" ? Container() : const SizedBox(height: 10),
+                        message == ""
+                            ? Container()
+                            : const SizedBox(height: 10),
                         message == "" ? Container() : Text(message),
                       ],
                     )),

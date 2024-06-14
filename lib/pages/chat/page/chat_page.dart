@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/chat_controller.dart';
 import 'package:sampark/controller/profile_controller.dart';
 import 'package:sampark/models/user_model.dart';
 import 'package:sampark/pages/chat/widgets/chat_bubble.dart';
+import 'package:sampark/pages/chat/widgets/type_message.dart';
 import 'package:sampark/pages/user%20profile/pages/user_profile_page.dart';
 
 class ChatPage extends StatelessWidget {
@@ -29,9 +31,13 @@ class ChatPage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 10.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100.0),
-              child: Image.network(
-                userModel.profileImage ?? AssetsImage.defaultProfileUrl,
+              child: CachedNetworkImage(
+                imageUrl:
+                    userModel.profileImage ?? AssetsImage.defaultProfileUrl,
                 fit: BoxFit.fill,
+                placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
           ),
@@ -61,76 +67,7 @@ class ChatPage extends StatelessWidget {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 5,
-        ),
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: Row(
-          children: [
-            ///mic icon
-            SizedBox(
-              width: 30,
-              height: 30,
-              child: SvgPicture.asset(
-                AssetsImage.chatMicSvg,
-                width: 25,
-              ),
-            ),
-            const Gap(10),
-
-            ///textfield
-            Expanded(
-              child: TextField(
-                controller: messageController,
-                decoration: const InputDecoration(
-                  filled: false,
-                  hintText: "Type message....",
-                ),
-              ),
-            ),
-            const Gap(10),
-
-            ///send image button
-            SizedBox(
-              width: 30,
-              height: 30,
-              child: SvgPicture.asset(
-                AssetsImage.chatGallarySvg,
-                width: 25,
-              ),
-            ),
-            const Gap(10),
-
-            ///send message button
-            InkWell(
-              onTap: () {
-                if (messageController.text.trim().isNotEmpty) {
-                  chatController.sendMessage(
-                    targetUserId: userModel.id!,
-                    message: messageController.text,
-                    targetUser: userModel,
-                  );
-                  messageController.clear();
-                }
-              },
-              child: SizedBox(
-                width: 30,
-                height: 30,
-                child: SvgPicture.asset(
-                  AssetsImage.chatSendSvg,
-                  width: 25,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      floatingActionButton: TypeMessage(userModel: userModel),
       body: Padding(
         padding: const EdgeInsets.only(
           left: 10,

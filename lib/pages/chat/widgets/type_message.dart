@@ -100,7 +100,8 @@ class TypeMessage extends StatelessWidget {
                   )
                 : InkWell(
                     onTap: () {
-                      if (messageController.text.trim().isNotEmpty) {
+                      if (messageController.text.trim().isNotEmpty ||
+                          chatController.selectedImagePath.value.isNotEmpty) {
                         chatController.sendMessage(
                           targetUserId: userModel.id!,
                           message: messageController.text,
@@ -113,10 +114,12 @@ class TypeMessage extends StatelessWidget {
                     child: SizedBox(
                       width: 30,
                       height: 30,
-                      child: SvgPicture.asset(
-                        AssetsImage.chatSendSvg,
-                        width: 25,
-                      ),
+                      child: chatController.isLoading.value
+                          ? const CircularProgressIndicator()
+                          : SvgPicture.asset(
+                              AssetsImage.chatSendSvg,
+                              width: 25,
+                            ),
                     ),
                   );
           }),

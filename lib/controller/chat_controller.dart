@@ -68,9 +68,17 @@ class ChatController extends GetxController {
     UserModel receiver =
         getReciver(profileController.currentUser.value, targetUser);
 
+    RxString imageUrl = "".obs;
+    if (selectedImagePath.value.isNotEmpty) {
+      imageUrl.value = await profileController.uploadFileToFirebase(
+        imagePath: selectedImagePath.value,
+      );
+    }
+
     var newChat = ChatModel(
       id: chatId,
       message: message,
+      imageUrl: imageUrl.value,
       senderId: auth.currentUser!.uid,
       receiverId: targetUserId,
       senderName: profileController.currentUser.value.name,
@@ -96,6 +104,10 @@ class ChatController extends GetxController {
           .collection("messages")
           .doc(chatId)
           .set(newChat.toJson());
+
+      ///after send message , image path will be empty
+      ///so that container will remove automatically
+      selectedImagePath.value = "";
 
       ///for save chat room details
       await db.collection("chats").doc(roomId).set(roomDetails.toJson());

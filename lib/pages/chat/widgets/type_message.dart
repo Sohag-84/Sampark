@@ -1,5 +1,7 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/chat_controller.dart';
+import 'package:sampark/controller/image_picker.dart';
 import 'package:sampark/models/user_model.dart';
 
 class TypeMessage extends StatelessWidget {
@@ -8,6 +10,7 @@ class TypeMessage extends StatelessWidget {
 
   final messageController = TextEditingController();
   final chatController = Get.put(ChatController());
+  final imagePickController = Get.put(ImagePickerController());
 
   final RxString message = "".obs;
 
@@ -53,19 +56,37 @@ class TypeMessage extends StatelessWidget {
           const Gap(10),
 
           ///send image button
-          SizedBox(
-            width: 30,
-            height: 30,
-            child: SvgPicture.asset(
-              AssetsImage.chatGallarySvg,
-              width: 25,
-            ),
+          Obx(
+            () => chatController.selectedImagePath.value.isEmpty
+                ? InkWell(
+                    onTap: () async {
+                      chatController.selectedImagePath.value =
+                          await imagePickController.pickImage(
+                        source: ImageSource.gallery,
+                      );
+                    },
+                    child: SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: SvgPicture.asset(
+                        AssetsImage.chatGallarySvg,
+                        width: 25,
+                      ),
+                    ),
+                  )
+                : InkWell(
+                    onTap: () {
+                      chatController.selectedImagePath.value = "";
+                    },
+                    child: const Icon(Icons.close, size: 30),
+                  ),
           ),
           const Gap(10),
 
           ///send message button
           Obx(() {
-            return message.value.isEmpty
+            return message.value.isEmpty &&
+                    chatController.selectedImagePath.isEmpty
                 ?
 
                 ///mic icon

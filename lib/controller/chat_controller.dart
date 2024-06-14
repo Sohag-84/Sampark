@@ -16,6 +16,7 @@ class ChatController extends GetxController {
   RxBool isLoading = false.obs;
 
   var uuid = const Uuid();
+  RxString selectedImagePath = "".obs;
 
   ProfileController profileController = Get.put(ProfileController());
 

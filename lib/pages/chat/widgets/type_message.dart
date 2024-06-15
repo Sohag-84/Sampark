@@ -1,4 +1,4 @@
-import 'package:image_picker/image_picker.dart';
+import 'package:sampark/common%20widgets/image_picker_bottom_sheet.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/chat_controller.dart';
 import 'package:sampark/controller/image_picker.dart';
@@ -59,10 +59,11 @@ class TypeMessage extends StatelessWidget {
           Obx(
             () => chatController.selectedImagePath.value.isEmpty
                 ? InkWell(
-                    onTap: () async {
-                      chatController.selectedImagePath.value =
-                          await imagePickController.pickImage(
-                        source: ImageSource.gallery,
+                    onTap: () {
+                      imagePickerBottomSheet(
+                        context: context,
+                        chatController: chatController,
+                        imagePickController: imagePickController,
                       );
                     },
                     child: SizedBox(

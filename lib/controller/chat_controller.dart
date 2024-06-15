@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/controller/contact_controller.dart';
 import 'package:sampark/models/chat_model.dart';
 import 'package:sampark/models/chat_room_model.dart';
 import 'package:sampark/models/user_model.dart';
@@ -19,6 +20,7 @@ class ChatController extends GetxController {
   RxString selectedImagePath = "".obs;
 
   ProfileController profileController = Get.put(ProfileController());
+  ContactController contactController = Get.put(ContactController());
 
   ///for room id
   String getRoomId({required String targetUserId}) {
@@ -111,6 +113,9 @@ class ChatController extends GetxController {
 
       ///for save chat room details
       await db.collection("chats").doc(roomId).set(roomDetails.toJson());
+
+      ///save contact
+      await contactController.saveContact(user: targetUser);
     } catch (e) {
       debugPrint(e.toString());
     }

@@ -5,6 +5,7 @@ import 'package:sampark/controller/profile_controller.dart';
 import 'package:sampark/pages/chat/page/chat_page.dart';
 import 'package:sampark/pages/contact/widgets/contact_search.dart';
 import 'package:sampark/pages/contact/widgets/new_contact_tile.dart';
+import 'package:sampark/pages/group/new%20group/new_group.dart';
 import 'package:sampark/pages/home/widget/chat_tile.dart';
 
 class ContactPage extends StatelessWidget {
@@ -51,7 +52,9 @@ class ContactPage extends StatelessWidget {
             ),
             const Gap(10),
             NewContactTile(
-              onTap: () {},
+              onTap: () {
+                Get.to(() => NewGroup());
+              },
               icon: Icons.group_add,
               btnName: "New Group",
             ),

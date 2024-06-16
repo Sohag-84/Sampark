@@ -16,10 +16,24 @@ class NewGroup extends StatelessWidget {
       appBar: AppBar(
         title: const Text("New Group"),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.arrow_forward),
-      ),
+      floatingActionButton: Obx(() {
+        return FloatingActionButton(
+          backgroundColor: groupController.groupMembers.isEmpty
+              ? Colors.grey
+              : Theme.of(context).colorScheme.primary,
+          onPressed: () {
+            if (groupController.groupMembers.isEmpty) {
+              Get.snackbar("Error", "Please select atleast one member");
+            } else {
+              Get.toNamed("/group-title");
+            }
+          },
+          child: Icon(
+            Icons.arrow_forward,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        );
+      }),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(

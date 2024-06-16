@@ -20,6 +20,8 @@ class ChatTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      splashColor:Colors.transparent,
+      highlightColor:Colors.transparent,
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(10),

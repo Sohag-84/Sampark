@@ -23,23 +23,29 @@ class GroupTitlePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("New Group"),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (groupNameController.text.trim().isEmpty) {
-            Get.snackbar("Error!", "Group name is required");
-          } else {
-            groupController.createGroup(
-              groupName: groupNameController.text,
-              imagePath: imagePath.value,
-            );
-          }
-        },
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        child: Icon(
-          Icons.done,
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
-      ),
+      floatingActionButton: Obx(() {
+        return FloatingActionButton(
+          onPressed: () {
+            if (groupNameController.text.trim().isEmpty) {
+              Get.snackbar("Error!", "Group name is required");
+            } else {
+              groupController.createGroup(
+                groupName: groupNameController.text,
+                imagePath: imagePath.value,
+              );
+            }
+          },
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          child: groupController.isLoading.value
+              ? const CircularProgressIndicator(
+                  color: Colors.white,
+                )
+              : Icon(
+                  Icons.done,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+        );
+      }),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(

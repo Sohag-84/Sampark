@@ -13,6 +13,7 @@ class GroupController extends GetxController {
   final profileController = Get.put(ProfileController());
 
   final uuid = const Uuid();
+  RxBool isLoading = false.obs;
 
   void selectMember({required UserModel user}) {
     if (groupMembers.contains(user)) {
@@ -27,6 +28,7 @@ class GroupController extends GetxController {
     required String groupName,
     required String imagePath,
   }) async {
+    isLoading.value = true;
     String groupId = uuid.v6();
     try {
       String imgUrl =
@@ -44,7 +46,9 @@ class GroupController extends GetxController {
 
       Get.snackbar("Group Created", "Group Created Successfully");
       Get.offAllNamed("/home");
+      isLoading.value = false;
     } catch (e) {
+      isLoading.value = false;
       debugPrint(e.toString());
     }
   }

@@ -19,11 +19,21 @@ class GroupTitlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("New Group"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          if (groupNameController.text.trim().isEmpty) {
+            Get.snackbar("Error!", "Group name is required");
+          } else {
+            groupController.createGroup(
+              groupName: groupNameController.text,
+              imagePath: imagePath.value,
+            );
+          }
+        },
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(
           Icons.done,

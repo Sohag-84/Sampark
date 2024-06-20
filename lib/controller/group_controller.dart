@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/profile_controller.dart';
+import 'package:sampark/models/chat_model.dart';
 import 'package:sampark/models/group_model.dart';
 import 'package:sampark/models/user_model.dart';
 import 'package:uuid/uuid.dart';
@@ -17,6 +16,7 @@ class GroupController extends GetxController {
   final profileController = Get.put(ProfileController());
 
   final uuid = const Uuid();
+  RxString selectedImagePath = "".obs;
   RxBool isLoading = false.obs;
 
   @override
@@ -62,6 +62,9 @@ class GroupController extends GetxController {
         "timeStamp": DateTime.now().toString(),
       });
 
+      ///after create group, fetched group list
+      getGroups();
+
       Get.snackbar("Group Created", "Group Created Successfully");
       Get.offAllNamed("/home");
       isLoading.value = false;
@@ -84,18 +87,54 @@ class GroupController extends GetxController {
             .toList();
       },
     );
-    log("temp group length: ${tempGroup.length}==***=====");
-    //groupList.clear();
+
+    groupList.clear();
     groupList.value = tempGroup
         .where(
-          //(e) => e.id!.contains(auth.currentUser!.uid)
-          //e.id!.contains(auth.currentUser!.uid))
           (e) => e.members!.any(
             (element) => element.id == auth.currentUser!.uid,
           ),
         )
         .toList();
-    log("Original group length: ${groupList.length}==***=====");
     isLoading.value = false;
+  }
+
+  ///for send group message
+  Future<void> sendGroupMessage({
+    required String message,
+    required String groupId,
+    required String imagePath,
+  }) async {
+    var chatId = uuid.v6();
+    String imageUrl =
+        await profileController.uploadFileToFirebase(imagePath: imagePath);
+    var newChat = ChatModel(
+      id: chatId,
+      message: message,
+      imageUrl: imageUrl,
+      senderId: auth.currentUser!.uid,
+      senderName: profileController.currentUser.value.name,
+      timestamp: DateTime.now().toString(),
+    );
+
+    await db
+        .collection("groups")
+        .doc(groupId)
+        .collection('messages')
+        .doc()
+        .set(newChat.toJson());
+  }
+
+  ///for get group message
+  Stream<List<ChatModel>> getGroupMessages({required String groupId}) {
+    return db
+        .collection('groups')
+        .doc(groupId)
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => ChatModel.fromJson(doc.data()))
+            .toList());
   }
 }

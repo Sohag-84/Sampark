@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           controller: tabController,
           children: [
             ChatList(),
-            const GroupPage(),
+            GroupPage(),
             const Center(child: Text("Calls")),
           ],
         ),

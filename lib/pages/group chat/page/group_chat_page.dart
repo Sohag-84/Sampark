@@ -8,6 +8,7 @@ import 'package:sampark/controller/profile_controller.dart';
 import 'package:sampark/models/group_model.dart';
 import 'package:sampark/pages/chat/widgets/chat_bubble.dart';
 import 'package:sampark/pages/group%20chat/widgets/group_type_message.dart';
+import 'package:sampark/pages/group%20info/page/group_info_page.dart';
 
 class GroupChatPage extends StatelessWidget {
   final GroupModel groupModel;
@@ -23,7 +24,11 @@ class GroupChatPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-          onTap: () {},
+          onTap: () {
+            Get.to(
+              () => GroupInfoPage(groupModel: groupModel),
+            );
+          },
           child: Container(
             height: 40,
             width: 40,

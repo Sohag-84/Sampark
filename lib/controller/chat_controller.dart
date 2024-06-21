@@ -136,4 +136,13 @@ class ChatController extends GetxController {
             .map((doc) => ChatModel.fromJson(doc.data()))
             .toList());
   }
+
+  ///for get user active & inactive status
+  Stream<UserModel> getStatus({required String uid}) {
+    return db
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .map((user) => UserModel.fromJson(user.data()!));
+  }
 }

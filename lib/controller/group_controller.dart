@@ -142,4 +142,17 @@ class GroupController extends GetxController {
             .map((doc) => ChatModel.fromJson(doc.data()))
             .toList());
   }
+
+  ///add group member
+  Future<void> addMemberToGroup({
+    required String groupId,
+    required UserModel user,
+  }) async {
+    isLoading.value = true;
+    await db.collection('groups').doc(groupId).update({
+      "memebers": FieldValue.arrayUnion([user.toJson()]),
+    });
+    getGroups();
+    isLoading.value = false;
+  }
 }

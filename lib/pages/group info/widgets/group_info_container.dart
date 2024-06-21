@@ -1,19 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sampark/config/constant.dart';
-import 'package:sampark/controller/profile_controller.dart';
+import 'package:sampark/controller/group_controller.dart';
+import 'package:sampark/models/user_model.dart';
 import 'package:sampark/pages/user%20profile/widgets/profile_icon_container.dart';
 
 class GroupInfoContainer extends StatelessWidget {
   final String profileImage;
   final String userName;
   final String userEmail;
+  final String groupId;
   GroupInfoContainer({
     super.key,
     required this.profileImage,
     required this.userName,
     required this.userEmail,
+    required this.groupId,
   });
-  final controller = Get.put(ProfileController());
+  final groupController = Get.put(GroupController());
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +97,18 @@ class GroupInfoContainer extends StatelessWidget {
                     ///chat
                     profileIconContainer(
                       context: context,
-                      onTap: () {},
+                      onTap: () async {
+                        var newMember = UserModel(
+                          name: "Ih Sohag",
+                          email: "ih@gmail.com",
+                          role: "user",
+                          profileImage: "",
+                        );
+                        await groupController.addMemberToGroup(
+                          groupId: groupId,
+                          user: newMember,
+                        );
+                      },
                       iconImage: AssetsImage.groupAddUser,
                       text: "Add",
                       color: Colors.white,

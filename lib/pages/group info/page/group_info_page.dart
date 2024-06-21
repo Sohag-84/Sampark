@@ -37,6 +37,7 @@ class GroupInfoPage extends StatelessWidget {
                   : groupModel.profileUrl!,
               userName: groupModel.name ?? "",
               userEmail: groupModel.description ?? "No description available",
+              groupId: groupModel.id!,
             ),
             const Gap(20),
             Text("Members", style: theme.textTheme.labelMedium),

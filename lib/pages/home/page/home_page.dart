@@ -3,6 +3,7 @@
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/contact_controller.dart';
 import 'package:sampark/controller/profile_controller.dart';
+import 'package:sampark/controller/status_controller.dart';
 import 'package:sampark/pages/group/group_page.dart';
 import 'package:sampark/pages/home/widget/chat_list.dart';
 import 'package:sampark/pages/home/widget/home_tab_bar.dart';
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     TabController tabController = TabController(length: 3, vsync: this);
     final profileController = Get.put(ProfileController());
     final contactController = Get.put(ContactController());
+    final statusController = Get.put(StatusController());
 
     return Scaffold(
       appBar: AppBar(

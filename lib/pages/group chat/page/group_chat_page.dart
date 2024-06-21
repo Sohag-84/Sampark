@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:sampark/config/constant.dart';
-import 'package:sampark/controller/chat_controller.dart';
 import 'package:sampark/controller/group_controller.dart';
 import 'package:sampark/controller/profile_controller.dart';
 import 'package:sampark/models/group_model.dart';
@@ -14,7 +13,6 @@ class GroupChatPage extends StatelessWidget {
   final GroupModel groupModel;
   GroupChatPage({super.key, required this.groupModel});
 
-  final chatController = Get.put(ChatController());
   final profileController = Get.put(ProfileController());
   final groupController = Get.put(GroupController());
 
@@ -129,7 +127,7 @@ class GroupChatPage extends StatelessWidget {
                     },
                   ),
                   Obx(
-                    () => chatController.selectedImagePath.value.isNotEmpty
+                    () => groupController.selectedImagePath.value.isNotEmpty
                         ? Positioned(
                             bottom: 0,
                             left: 0,
@@ -148,7 +146,7 @@ class GroupChatPage extends StatelessWidget {
                                       fit: BoxFit.contain,
                                       image: FileImage(
                                         File(
-                                          chatController
+                                          groupController
                                               .selectedImagePath.value,
                                         ),
                                       ),
@@ -159,7 +157,7 @@ class GroupChatPage extends StatelessWidget {
                                   right: 0,
                                   child: IconButton(
                                     onPressed: () {
-                                      chatController.selectedImagePath.value =
+                                      groupController.selectedImagePath.value =
                                           "";
                                     },
                                     icon: const Icon(Icons.close),

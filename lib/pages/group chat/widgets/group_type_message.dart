@@ -1,6 +1,5 @@
 import 'package:sampark/common%20widgets/image_picker_bottom_sheet.dart';
 import 'package:sampark/config/constant.dart';
-import 'package:sampark/controller/chat_controller.dart';
 import 'package:sampark/controller/group_controller.dart';
 import 'package:sampark/controller/image_picker.dart';
 import 'package:sampark/models/group_model.dart';
@@ -10,9 +9,8 @@ class GroupTypeMessage extends StatelessWidget {
   GroupTypeMessage({super.key, required this.groupModel});
 
   final messageController = TextEditingController();
-  final chatController = Get.put(ChatController());
-  final imagePickController = Get.put(ImagePickerController());
   final groupController = Get.put(GroupController());
+  final imagePickController = Get.put(ImagePickerController());
 
   final RxString message = "".obs;
 
@@ -59,12 +57,12 @@ class GroupTypeMessage extends StatelessWidget {
 
           ///send image button
           Obx(
-            () => chatController.selectedImagePath.value.isEmpty
+            () => groupController.selectedImagePath.value.isEmpty
                 ? InkWell(
                     onTap: () {
                       imagePickerBottomSheet(
                         context: context,
-                        chatController: chatController,
+                        imagePath: groupController.selectedImagePath,
                         imagePickController: imagePickController,
                       );
                     },
@@ -79,7 +77,7 @@ class GroupTypeMessage extends StatelessWidget {
                   )
                 : InkWell(
                     onTap: () {
-                      chatController.selectedImagePath.value = "";
+                      groupController.selectedImagePath.value = "";
                     },
                     child: const Icon(Icons.close, size: 30),
                   ),
@@ -89,7 +87,7 @@ class GroupTypeMessage extends StatelessWidget {
           ///send message button
           Obx(() {
             return message.value.isEmpty &&
-                    chatController.selectedImagePath.isEmpty
+                    groupController.selectedImagePath.isEmpty
                 ?
 
                 ///mic icon
@@ -104,7 +102,7 @@ class GroupTypeMessage extends StatelessWidget {
                 : InkWell(
                     onTap: () {
                       if (messageController.text.trim().isNotEmpty ||
-                          chatController.selectedImagePath.value.isNotEmpty) {
+                          groupController.selectedImagePath.value.isNotEmpty) {
                         groupController.sendGroupMessage(
                           message: messageController.text,
                           groupId: groupModel.id!,
@@ -117,7 +115,7 @@ class GroupTypeMessage extends StatelessWidget {
                     child: SizedBox(
                       width: 30,
                       height: 30,
-                      child: chatController.isLoading.value
+                      child: groupController.isLoading.value
                           ? const CircularProgressIndicator()
                           : SvgPicture.asset(
                               AssetsImage.chatSendSvg,

@@ -1,11 +1,10 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:sampark/config/constant.dart';
-import 'package:sampark/controller/chat_controller.dart';
 import 'package:sampark/controller/image_picker.dart';
 
 Future<dynamic> imagePickerBottomSheet({
   required BuildContext context,
-  required ChatController chatController,
+  required RxString imagePath,
   required ImagePickerController imagePickController,
 }) {
   return Get.bottomSheet(
@@ -24,7 +23,7 @@ Future<dynamic> imagePickerBottomSheet({
           ///pick image from camera
           InkWell(
             onTap: () async {
-              chatController.selectedImagePath.value =
+             imagePath.value =
                   await imagePickController.pickImage(
                 source: ImageSource.camera,
               );
@@ -47,7 +46,7 @@ Future<dynamic> imagePickerBottomSheet({
           ///pick image from gallery
           InkWell(
             onTap: () async {
-              chatController.selectedImagePath.value =
+              imagePath.value =
                   await imagePickController.pickImage(
                 source: ImageSource.gallery,
               );

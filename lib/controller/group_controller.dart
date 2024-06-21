@@ -105,9 +105,11 @@ class GroupController extends GetxController {
     required String groupId,
     required String imagePath,
   }) async {
+    isLoading.value = true;
     var chatId = uuid.v6();
-    String imageUrl =
-        await profileController.uploadFileToFirebase(imagePath: imagePath);
+    String imageUrl = await profileController.uploadFileToFirebase(
+      imagePath: selectedImagePath.value,
+    );
     var newChat = ChatModel(
       id: chatId,
       message: message,
@@ -123,6 +125,9 @@ class GroupController extends GetxController {
         .collection('messages')
         .doc()
         .set(newChat.toJson());
+
+    selectedImagePath.value = "";
+    isLoading.value = false;
   }
 
   ///for get group message

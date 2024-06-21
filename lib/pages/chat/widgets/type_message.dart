@@ -62,7 +62,7 @@ class TypeMessage extends StatelessWidget {
                     onTap: () {
                       imagePickerBottomSheet(
                         context: context,
-                        chatController: chatController,
+                        imagePath: chatController.selectedImagePath,
                         imagePickController: imagePickController,
                       );
                     },

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:sampark/config/constant.dart';
+import 'package:sampark/controller/call_controller.dart';
 import 'package:sampark/controller/chat_controller.dart';
 import 'package:sampark/controller/profile_controller.dart';
 import 'package:sampark/models/user_model.dart';
@@ -16,6 +17,7 @@ class ChatPage extends StatelessWidget {
 
   final chatController = Get.put(ChatController());
   final profileController = Get.put(ProfileController());
+  final callController = Get.put(CallController());
 
   final messageController = TextEditingController();
 
@@ -68,7 +70,12 @@ class ChatPage extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              callController.callAction(
+                receiver: userModel,
+                caller: profileController.currentUser.value,
+              );
+            },
             icon: const Icon(Icons.phone),
           ),
           IconButton(

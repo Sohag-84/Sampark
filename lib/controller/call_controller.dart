@@ -13,9 +13,10 @@ class CallController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getCallsNotification().listen((snapshot) {
-      if (snapshot.docs.isNotEmpty) {
-        Get.snackbar("Calling", "Calling your device");
+    getCallsNotification().listen((List<CallModel> callList) {
+      if (callList.isNotEmpty) {
+        CallModel callData = callList[0];
+        Get.snackbar(callData.callerName!, "Incoming call");
       }
     });
   }
@@ -75,12 +76,15 @@ class CallController extends GetxController {
   }
 
   ///get call notification
-  Stream<QuerySnapshot> getCallsNotification() {
+  Stream<List<CallModel>> getCallsNotification() {
     return db
         .collection('notification')
         .doc(auth.currentUser!.uid)
         .collection('call')
-        .snapshots();
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => CallModel.fromJson(doc.data()))
+            .toList());
   }
 
   ///for end call

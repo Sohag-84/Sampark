@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/models/audio_call_model.dart';
 import 'package:sampark/models/user_model.dart';
+import 'package:sampark/pages/caller%20page/audio%20call%20page/audio_call_page.dart';
 import 'package:uuid/uuid.dart';
 
 class CallController extends GetxController {
@@ -16,7 +17,35 @@ class CallController extends GetxController {
     getCallsNotification().listen((List<CallModel> callList) {
       if (callList.isNotEmpty) {
         CallModel callData = callList[0];
-        Get.snackbar(callData.callerName!, "Incoming call");
+        Get.snackbar(
+          duration: const Duration(days: 15),
+          callData.callerName!,
+          "Incoming call",
+          isDismissible: false,
+          backgroundColor: Colors.grey[900],
+          icon: const Icon(Icons.phone),
+          onTap: (snack) {
+            ///when recieved call then snackbar will be close
+            Get.back();
+            Get.to(
+              () => AudioCallPage(
+                reciever: UserModel(
+                  id: callData.id,
+                  name: callData.callerName,
+                  email: callData.callerEmail,
+                  profileImage: callData.callerPic,
+                ),
+              ),
+            );
+          },
+          mainButton: TextButton(
+            onPressed: () {
+              endCall(callModel: callData);
+              Get.back();
+            },
+            child: const Text("End Call"),
+          ),
+        );
       }
     });
   }

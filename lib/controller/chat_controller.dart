@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/contact_controller.dart';
+import 'package:sampark/models/audio_call_model.dart';
 import 'package:sampark/models/chat_model.dart';
 import 'package:sampark/models/chat_room_model.dart';
 import 'package:sampark/models/user_model.dart';
@@ -137,12 +138,25 @@ class ChatController extends GetxController {
             .toList());
   }
 
-  ///for get user active & inactive status
+  ///for get call list
   Stream<UserModel> getStatus({required String uid}) {
     return db
         .collection('users')
         .doc(uid)
         .snapshots()
         .map((user) => UserModel.fromJson(user.data()!));
+  }
+
+  ///for get call list
+  Stream<List<CallModel>> getCalls() {
+    return db
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('calls')
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => CallModel.fromJson(doc.data()))
+            .toList());
   }
 }

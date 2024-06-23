@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/models/audio_call_model.dart';
 import 'package:sampark/models/user_model.dart';
-import 'package:sampark/pages/caller%20page/audio%20call%20page/audio_call_page.dart';
+import 'package:sampark/pages/caller%20page/audio_call_page.dart';
+import 'package:sampark/pages/caller%20page/video_call_page.dart';
 import 'package:uuid/uuid.dart';
 
 class CallController extends GetxController {
@@ -17,43 +19,88 @@ class CallController extends GetxController {
     getCallsNotification().listen((List<CallModel> callList) {
       if (callList.isNotEmpty) {
         CallModel callData = callList[0];
-        Get.snackbar(
-          duration: const Duration(days: 15),
-          callData.callerName!,
-          "Incoming call",
-          isDismissible: false,
-          backgroundColor: Colors.grey[900],
-          icon: const Icon(Icons.phone),
-          onTap: (snack) {
-            ///when recieved call then snackbar will be close
-            Get.back();
-            Get.to(
-              () => AudioCallPage(
-                reciever: UserModel(
-                  id: callData.id,
-                  name: callData.callerName,
-                  email: callData.callerEmail,
-                  profileImage: callData.callerPic,
-                ),
-              ),
-            );
-          },
-          mainButton: TextButton(
-            onPressed: () {
-              endCall(callModel: callData);
-              Get.back();
-            },
-            child: const Text("End Call"),
-          ),
-        );
+        if (callData.type == "audio") {
+          audioCallNotification(callData: callData);
+        } else if (callData.type == "video") {
+          videoCallNotification(callData: callData);
+        }
       }
     });
+  }
+
+//for audio call notification
+  Future<void> audioCallNotification({required CallModel callData}) async {
+    Get.snackbar(
+      duration: const Duration(days: 15),
+      callData.callerName!,
+      "Incoming Audio Call",
+      isDismissible: false,
+      backgroundColor: Colors.grey[900],
+      icon: const Icon(Icons.phone),
+      onTap: (snack) {
+        ///when recieved call then snackbar will be close
+        Get.back();
+        Get.to(
+          () => AudioCallPage(
+            reciever: UserModel(
+              id: callData.id,
+              name: callData.callerName,
+              email: callData.callerEmail,
+              profileImage: callData.callerPic,
+            ),
+          ),
+        );
+      },
+      mainButton: TextButton(
+        onPressed: () {
+          endCall(callModel: callData);
+          Get.back();
+        },
+        child: const Text("End Call"),
+      ),
+    );
+  }
+
+//for video call notification
+  Future<void> videoCallNotification({required CallModel callData}) async {
+    Get.snackbar(
+      duration: const Duration(days: 15),
+      callData.callerName!,
+      "Incoming Video Call",
+      isDismissible: false,
+      backgroundColor: Colors.grey[900],
+      icon: const Icon(Icons.video_call),
+      onTap: (snack) {
+        ///when recieved call then snackbar will be close
+        Get.back();
+        Get.to(
+          () => VideoCallPage(
+            reciever: UserModel(
+              id: callData.id,
+              name: callData.callerName,
+              email: callData.callerEmail,
+              profileImage: callData.callerPic,
+            ),
+          ),
+        );
+      },
+      mainButton: TextButton(
+        onPressed: () {
+          endCall(callModel: callData);
+          Get.back();
+        },
+        child: const Text("End Call"),
+      ),
+    );
   }
 
   Future<void> callAction({
     required UserModel receiver,
     required UserModel caller,
+    required String type,
   }) async {
+    DateTime timestamp = DateTime.now();
+    String nowTime = DateFormat('hh:mm a').format(timestamp);
     var newCall = CallModel(
       id: uuid,
       callerName: caller.name,
@@ -65,6 +112,9 @@ class CallController extends GetxController {
       receiverPic: receiver.profileImage,
       receiverUid: receiver.id,
       status: "dialing",
+      time: nowTime,
+      timestamp: DateTime.now().toString(),
+      type: type,
     );
 
     try {

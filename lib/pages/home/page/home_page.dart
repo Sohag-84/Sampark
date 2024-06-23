@@ -4,6 +4,7 @@ import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/contact_controller.dart';
 import 'package:sampark/controller/profile_controller.dart';
 import 'package:sampark/controller/status_controller.dart';
+import 'package:sampark/pages/call%20history/call_history_page.dart';
 import 'package:sampark/pages/group/group_page.dart';
 import 'package:sampark/pages/home/widget/chat_list.dart';
 import 'package:sampark/pages/home/widget/home_tab_bar.dart';
@@ -70,7 +71,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           children: [
             ChatList(),
             GroupPage(),
-            const Center(child: Text("Calls")),
+            CallHistoryPage(),
           ],
         ),
       ),

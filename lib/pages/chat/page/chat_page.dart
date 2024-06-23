@@ -7,7 +7,8 @@ import 'package:sampark/controller/call_controller.dart';
 import 'package:sampark/controller/chat_controller.dart';
 import 'package:sampark/controller/profile_controller.dart';
 import 'package:sampark/models/user_model.dart';
-import 'package:sampark/pages/caller%20page/audio%20call%20page/audio_call_page.dart';
+import 'package:sampark/pages/caller%20page/audio_call_page.dart';
+import 'package:sampark/pages/caller%20page/video_call_page.dart';
 import 'package:sampark/pages/chat/widgets/chat_bubble.dart';
 import 'package:sampark/pages/chat/widgets/type_message.dart';
 import 'package:sampark/pages/user%20profile/pages/user_profile_page.dart';
@@ -76,12 +77,20 @@ class ChatPage extends StatelessWidget {
               callController.callAction(
                 receiver: userModel,
                 caller: profileController.currentUser.value,
+                type: 'audio',
               );
             },
             icon: const Icon(Icons.phone),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.to(() => VideoCallPage(reciever: userModel));
+              callController.callAction(
+                receiver: userModel,
+                caller: profileController.currentUser.value,
+                type: 'video',
+              );
+            },
             icon: const Icon(Icons.video_call),
           ),
         ],

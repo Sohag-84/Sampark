@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:sampark/config/constant.dart';
 import 'package:sampark/controller/chat_controller.dart';
 import 'package:sampark/models/audio_call_model.dart';
@@ -20,12 +21,14 @@ class CallHistoryPage extends StatelessWidget {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 CallModel data = snapshot.data![index];
+                DateTime timestamp = DateTime.parse(data.timestamp!);
+                String formattedTime = DateFormat("hh:mm:a").format(timestamp);
                 return ChatTile(
                   onTap: () {},
                   imgUrl: data.receiverPic ?? AssetsImage.defaultProfileUrl,
                   name: data.receiverName ?? "",
-                  lastChat: data.time ?? "",
-                  lastTime: data.time ?? "",
+                  lastChat: data.type ?? "",
+                  lastTime: formattedTime,
                 );
               },
             );

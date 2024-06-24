@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sampark/config/page_path.dart';
 import 'package:sampark/config/theme.dart';
-import 'package:sampark/controller/call_controller.dart';
 import 'package:sampark/pages/splash/splash_page.dart';
 
 import 'firebase_options.dart';
@@ -23,7 +22,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final callController = Get.put(CallController());
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sampark',
